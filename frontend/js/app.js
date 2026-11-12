@@ -1,4 +1,4 @@
-// State variables
+// State Variables
 let currentAnalysis = null;
 let currentVisualMode = 'ela';
 
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Navigation Handling
 function setupNavigation() {
-  const navButtons = document.querySelectorAll(".nav-btn");
+  const navButtons = document.querySelectorAll(".nav-item");
   navButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const targetTab = btn.getAttribute("data-tab");
@@ -21,20 +21,29 @@ function setupNavigation() {
 }
 
 function switchTab(tabId) {
-  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
 
-  const targetBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
+  const targetBtn = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
   const targetPane = document.getElementById(`tab-${tabId}`);
+  const pageTitle = document.getElementById("page-title");
 
   if (targetBtn) targetBtn.classList.add("active");
   if (targetPane) targetPane.classList.add("active");
+
+  if (pageTitle) {
+    if (tabId === "investigation") pageTitle.innerText = "Evidence analysis";
+    else if (tabId === "methodology") pageTitle.innerText = "Methodology & Standards";
+    else if (tabId === "stego-studio") pageTitle.innerText = "Stego Studio";
+  }
 }
 
 // Dropzone & File Input Handling
 function setupDropzone() {
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("file-input");
+
+  if (!dropzone || !fileInput) return;
 
   dropzone.addEventListener("dragover", (e) => {
     e.preventDefault();
@@ -62,34 +71,36 @@ function setupDropzone() {
 
 // Fetch Pre-built Demo Samples
 async function loadDemoSamples() {
-  const listEl = document.getElementById("samples-list");
+  const gridEl = document.getElementById("demo-cases-grid");
+  if (!gridEl) return;
+
   try {
     const res = await fetch("/api/samples");
     const data = await res.json();
     
     if (!data.samples || data.samples.length === 0) {
-      listEl.innerHTML = `<div style="color: var(--text-muted); padding: 10px; font-size: 0.8rem;">No demo samples loaded.</div>`;
+      gridEl.innerHTML = `<div style="color: var(--text-muted); font-size: 11px;">No demo samples loaded.</div>`;
       return;
     }
 
-    listEl.innerHTML = data.samples.map(s => `
-      <div class="sample-item" onclick="runSampleAnalysis('${s.filename}')">
-        <div class="sample-info">
-          <span class="sample-title">${s.filename}</span>
-          <span class="sample-desc">${s.description}</span>
+    gridEl.innerHTML = data.samples.map(s => `
+      <div class="demo-pill-btn" onclick="runSampleAnalysis('${s.filename}')" title="${s.description}">
+        <div class="demo-pill-left">
+          <span class="demo-pill-name">${s.filename}</span>
+          <span class="demo-pill-badge">${s.description.split('(')[0].trim()}</span>
         </div>
-        <button class="sample-run-btn">Run</button>
+        <span class="demo-run-glyph">Run →</span>
       </div>
     `).join("");
 
   } catch (err) {
-    listEl.innerHTML = `<div style="color: var(--accent-red); font-size: 0.8rem; padding: 10px;">Failed to load samples: ${err.message}</div>`;
+    gridEl.innerHTML = `<div style="color: var(--accent-red); font-size: 11px;">Failed to load demo cases: ${err.message}</div>`;
   }
 }
 
 // Upload & Analyze Evidence File
 async function uploadAndAnalyze(file) {
-  showLoading(`Screening uploaded file: ${file.name}`);
+  showLoading(`Analyzing evidence: ${file.name}`);
   const formData = new FormData();
   formData.append("file", file);
 
@@ -114,9 +125,9 @@ async function uploadAndAnalyze(file) {
   }
 }
 
-// Analyze Sample Directly
+// Run Analysis on Selected Sample
 async function runSampleAnalysis(sampleName) {
-  showLoading(`Analyzing test sample: ${sampleName}`);
+  showLoading(`Screening demo sample: ${sampleName}`);
   const formData = new FormData();
   formData.append("sample_name", sampleName);
 
@@ -135,7 +146,7 @@ async function runSampleAnalysis(sampleName) {
     currentAnalysis = data;
     renderAnalysisResults(data);
   } catch (err) {
-    alert("Sample Analysis Error: " + err.message);
+    alert("Sample Screening Error: " + err.message);
   } finally {
     hideLoading();
   }
@@ -197,51 +208,54 @@ async function handleGenerateDemo(event) {
   }
 }
 
-// UI Rendering
+// Render Results Dashboard
 function renderAnalysisResults(data) {
   const { triage, analysis, correlation, report, analysis_id, file_category } = data;
 
-  // 1. Verdict Banner & Score Meter
-  const scoreCircle = document.getElementById("score-circle");
-  const verdictBadge = document.getElementById("verdict-badge");
+  // 1. Reference ID
+  document.getElementById("res-analysis-ref").innerText = `REF: CASE-${analysis_id.substring(0,8).toUpperCase()}`;
+
+  // 2. Verdict Master Banner & Gauge
+  const scoreBadge = document.getElementById("score-badge");
+  const verdictTag = document.getElementById("verdict-tag");
   const verdictTitle = document.getElementById("verdict-title");
   const verdictSummary = document.getElementById("verdict-summary");
-  const verdictBanner = document.getElementById("verdict-banner");
+  const verdictCard = document.getElementById("verdict-card");
 
-  scoreCircle.innerText = correlation.risk_score;
-  scoreCircle.style.borderColor = correlation.verdict_color;
-  scoreCircle.style.color = correlation.verdict_color;
+  scoreBadge.innerText = correlation.risk_score;
+  scoreBadge.style.borderColor = correlation.verdict_color;
+  scoreBadge.style.color = correlation.verdict_color;
+  scoreBadge.style.boxShadow = `0 0 20px ${correlation.verdict_color}33`;
 
-  verdictBadge.innerHTML = `<span>●</span> ${correlation.verdict}`;
-  verdictBadge.style.color = correlation.verdict_color;
+  verdictTag.innerHTML = `<span>●</span> ${correlation.verdict}`;
+  verdictTag.style.color = correlation.verdict_color;
 
   verdictTitle.innerText = correlation.verdict_label;
   verdictSummary.innerText = correlation.summary;
-  verdictBanner.style.borderLeftColor = correlation.verdict_color;
+  verdictCard.style.borderLeftColor = correlation.verdict_color;
 
-  // 2. Level 1 Triage Card
+  // 3. Level 1 Triage Card
   document.getElementById("res-filename").innerText = triage.filename;
   document.getElementById("res-filesize").innerText = triage.filesize_formatted;
   document.getElementById("res-magic").innerText = triage.detected_format;
   document.getElementById("res-mime").innerText = triage.detected_mime;
-  document.getElementById("res-entropy").innerText = `${triage.global_entropy} bits/byte`;
+  document.getElementById("res-entropy").innerText = `${triage.global_entropy} / 8.00 bits/byte`;
   document.getElementById("res-sha256").innerText = triage.hashes.sha256;
   document.getElementById("res-md5").innerText = triage.hashes.md5;
-  document.getElementById("res-analysis-id").innerText = analysis_id;
 
-  const extBadge = document.getElementById("extension-match-badge");
+  const extBadge = document.getElementById("extension-badge");
   if (triage.extension_mismatch) {
-    extBadge.className = "badge-danger";
+    extBadge.className = "status-pill-alert";
     extBadge.innerText = "MISMATCH DETECTED!";
   } else {
-    extBadge.className = "badge-clean";
+    extBadge.className = "status-pill-clean";
     extBadge.innerText = "Signature Match";
   }
 
-  // 3. Level 2 Steganography Card
+  // 4. Level 2 Steganography Card
   renderCategorySpecificAnalysis(file_category, analysis, correlation);
 
-  // 4. Visual Card (Only for Images)
+  // 5. Visual Artifact Forensics (For Images)
   const visualCard = document.getElementById("visual-card");
   if (file_category === "image" && analysis.visual_artifacts) {
     visualCard.style.display = "block";
@@ -250,35 +264,36 @@ function renderAnalysisResults(data) {
     visualCard.style.display = "none";
   }
 
-  // 5. Level 3 Correlation & Rules Card
+  // 6. Level 3 Correlation & Rules Card
   const rulesListEl = document.getElementById("rules-list");
   const rulesBadge = document.getElementById("rules-count-badge");
   rulesBadge.innerText = `${correlation.triggered_rules_count} Rule(s) Triggered`;
 
   if (correlation.triggered_rules_count > 0) {
-    rulesBadge.className = "badge-danger";
+    rulesBadge.className = "status-pill-alert";
     rulesListEl.innerHTML = correlation.triggered_rules.map(r => `
-      <div class="rule-item">
-        <div class="rule-header">
-          <span class="rule-name">${r.name}</span>
-          <span class="${r.severity === 'CRITICAL' ? 'badge-danger' : 'badge-warning'}">${r.severity}</span>
+      <div class="rule-block">
+        <div class="rule-header-row">
+          <span class="rule-title">${r.name}</span>
+          <span class="${r.severity === 'CRITICAL' ? 'status-pill-alert' : 'status-pill-warning'}">${r.severity}</span>
         </div>
-        <span style="font-size: 0.72rem; color: var(--accent-cyan); font-family: var(--font-mono);">${r.rule_id}</span>
+        <span class="rule-id-tag">${r.rule_id}</span>
         <div class="rule-desc">${r.description}</div>
       </div>
     `).join("");
   } else {
-    rulesBadge.className = "badge-clean";
-    rulesListEl.innerHTML = `<div style="color: var(--accent-green); font-size: 0.85rem; padding: 12px 0;">✓ Zero correlation rules violated. File passes automated checks.</div>`;
+    rulesBadge.className = "status-pill-clean";
+    rulesListEl.innerHTML = `<div style="color: var(--accent-green); font-size: 12.5px; padding: 12px 0;">✓ Zero correlation anomalies detected. Evidence conforms to standard specifications.</div>`;
   }
 
   // Recommendations
   const recsListEl = document.getElementById("recommendations-list");
   recsListEl.innerHTML = correlation.forensic_recommendations.map(r => `<li>${r}</li>`).join("");
 
-  // Show container
-  document.getElementById("results-container").style.display = "flex";
-  document.getElementById("results-container").scrollIntoView({ behavior: 'smooth' });
+  // Reveal Results Viewport and smooth scroll
+  const resultsViewport = document.getElementById("results-viewport");
+  resultsViewport.style.display = "flex";
+  resultsViewport.scrollIntoView({ behavior: 'smooth' });
 }
 
 function renderCategorySpecificAnalysis(category, analysis, correlation) {
@@ -294,22 +309,22 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
     const blind = analysis.blind_lsb || {};
 
     const isSuspicious = chi2.is_suspicious || rs.suspicious || overlay.overlay_found || blind.candidate_count > 0;
-    badgeEl.className = isSuspicious ? "badge-danger" : "badge-clean";
+    badgeEl.className = isSuspicious ? "status-pill-alert" : "status-pill-clean";
     badgeEl.innerText = isSuspicious ? "Stego Indicators Found" : "Passes Statistical Tests";
 
     let html = `
-      <div style="margin-bottom: 15px;">
-        <h4 style="font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 6px;">
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 6px;">
           1. Chi-Square (χ²) Pair-of-Values LSB Test
-        </h4>
-        <table class="kv-table" style="font-size: 0.8rem;">
+        </div>
+        <table class="forensic-table" style="font-size: 11.5px;">
           <thead>
-            <tr style="color: var(--text-muted); text-align: left;">
-              <th>Channel</th>
-              <th>χ² Stat</th>
-              <th>deg of freedom</th>
-              <th>p-Value</th>
-              <th>Status</th>
+            <tr style="color: var(--text-muted); text-align: left; border-bottom: 1px solid var(--border-subtle);">
+              <th style="padding: 4px;">Channel</th>
+              <th style="padding: 4px;">χ² Stat</th>
+              <th style="padding: 4px;">deg of freedom</th>
+              <th style="padding: 4px;">p-Value</th>
+              <th style="padding: 4px;">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -319,11 +334,11 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
       const isSus = res.suspicious;
       html += `
         <tr>
-          <td style="color: #fff; font-weight: 600;">${ch}</td>
-          <td>${res.chi2_statistic}</td>
-          <td>${res.degrees_of_freedom}</td>
-          <td style="font-family: var(--font-mono); color: ${isSus ? '#ef4444' : '#10b981'};">${res.p_value}</td>
-          <td><span class="${isSus ? 'badge-danger' : 'badge-clean'}">${isSus ? 'FLAGGED (p < 0.05)' : 'Normal'}</span></td>
+          <td style="color: #ffffff; font-weight: 600; padding: 6px 4px;">${ch}</td>
+          <td style="padding: 6px 4px;">${res.chi2_statistic}</td>
+          <td style="padding: 6px 4px;">${res.degrees_of_freedom}</td>
+          <td style="font-family: var(--font-mono); color: ${isSus ? '#ef4444' : '#10b981'}; padding: 6px 4px;">${res.p_value}</td>
+          <td style="padding: 6px 4px;"><span class="${isSus ? 'status-pill-alert' : 'status-pill-clean'}">${isSus ? 'FLAGGED (p < 0.05)' : 'Normal'}</span></td>
         </tr>
       `;
     }
@@ -333,24 +348,24 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
         </table>
       </div>
 
-      <div style="margin-bottom: 15px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-        <h4 style="font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 6px;">
-          2. RS Steganalysis (Fridrich Dual-Masking)
-        </h4>
-        <table class="kv-table">
+      <div style="margin-bottom: 14px; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 6px;">
+          2. RS Steganalysis (Dual-Masking Group Shift)
+        </div>
+        <table class="forensic-table">
           <tr>
-            <td class="kv-key">Estimated Payload Fraction</td>
-            <td class="kv-val" style="color: ${rs.suspicious ? '#ef4444' : '#10b981'}; font-weight: 700;">
+            <td class="td-label">Estimated Payload Fraction</td>
+            <td class="td-value" style="color: ${rs.suspicious ? '#ef4444' : '#10b981'}; font-weight: 700;">
               ${rs.estimated_payload_percent || '0%'}
             </td>
           </tr>
           <tr>
-            <td class="kv-key">Regular Groups (R_M / R_-M)</td>
-            <td class="kv-val">${rs.regular_groups_pos} / ${rs.regular_groups_neg}</td>
+            <td class="td-label">Regular Groups (R_M / R_-M)</td>
+            <td class="td-value">${rs.regular_groups_pos} / ${rs.regular_groups_neg}</td>
           </tr>
           <tr>
-            <td class="kv-key">Singular Groups (S_M / S_-M)</td>
-            <td class="kv-val">${rs.singular_groups_pos} / ${rs.singular_groups_neg}</td>
+            <td class="td-label">Singular Groups (S_M / S_-M)</td>
+            <td class="td-value">${rs.singular_groups_pos} / ${rs.singular_groups_neg}</td>
           </tr>
         </table>
       </div>
@@ -358,12 +373,12 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
 
     if (overlay.overlay_found) {
       html += `
-        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 10px; margin-bottom: 12px;">
-          <h5 style="color: #ef4444; font-size: 0.8rem; margin-bottom: 4px;">⚠️ Trailing Container Overlay Detected!</h5>
-          <p style="font-size: 0.75rem; color: var(--text-muted);">
-            Detected ${overlay.overlay_size_bytes} trailing bytes appended past ${overlay.marker_name}.
+        <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 12px; margin-bottom: 12px;">
+          <div style="color: #ef4444; font-size: 12px; font-weight: 700; margin-bottom: 4px;">⚠️ Trailing Container Overlay Discovered!</div>
+          <p style="font-size: 11.5px; color: var(--text-secondary);">
+            Found ${overlay.overlay_size_bytes} trailing bytes appended past ${overlay.marker_name}.
           </p>
-          <div style="font-family: var(--font-mono); font-size: 0.75rem; background: #000; padding: 6px; border-radius: 4px; margin-top: 4px; word-break: break-all;">
+          <div class="terminal-content" style="margin-top: 6px;">
             ${overlay.overlay_preview}
           </div>
         </div>
@@ -372,12 +387,12 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
 
     if (blind.candidate_count > 0) {
       html += `
-        <div class="payload-box">
-          <h4><span>🔍</span> Extracted LSB Candidate Strings</h4>
+        <div class="payload-terminal">
+          <div class="terminal-title"><span>🔍</span> Extracted LSB Candidate Strings</div>
           ${blind.candidates.map(c => `
             <div style="margin-bottom: 6px;">
-              <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">${c.type}:</span>
-              <div class="payload-content">${c.preview}</div>
+              <span style="font-size: 11px; color: var(--accent-cyan); font-weight: 600;">${c.type}:</span>
+              <div class="terminal-content">${c.preview}</div>
             </div>
           `).join("")}
         </div>
@@ -388,18 +403,18 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
 
   } else if (category === "text") {
     titleEl.innerText = "Text Steganography Screening (Zero-Width Analysis)";
-    badgeEl.className = analysis.is_suspicious ? "badge-danger" : "badge-clean";
+    badgeEl.className = analysis.is_suspicious ? "status-pill-alert" : "status-pill-clean";
     badgeEl.innerText = analysis.is_suspicious ? "Invisible Characters Found" : "Clean Text";
 
     let html = `
-      <table class="kv-table">
+      <table class="forensic-table">
         <tr>
-          <td class="kv-key">Total Visible Characters</td>
-          <td class="kv-val">${analysis.total_characters}</td>
+          <td class="td-label">Total Visible Characters</td>
+          <td class="td-value">${analysis.total_characters}</td>
         </tr>
         <tr>
-          <td class="kv-key">Zero-Width Hidden Characters</td>
-          <td class="kv-val" style="color: ${analysis.zero_width_characters_found > 0 ? '#ef4444' : '#10b981'}; font-weight: 700;">
+          <td class="td-label">Zero-Width Hidden Characters</td>
+          <td class="td-value" style="color: ${analysis.zero_width_characters_found > 0 ? '#ef4444' : '#10b981'}; font-weight: 700;">
             ${analysis.zero_width_characters_found} (${analysis.zero_width_ratio_percent}%)
           </td>
         </tr>
@@ -408,18 +423,18 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
 
     if (analysis.has_decoded_payload) {
       html += `
-        <div class="payload-box">
-          <h4><span>🔓</span> Reconstructed Invisible Secret Message</h4>
-          <div class="payload-content">${analysis.decoded_hidden_payload}</div>
+        <div class="payload-terminal">
+          <div class="terminal-title"><span>🔓</span> Reconstructed Invisible Secret Message</div>
+          <div class="terminal-content">${analysis.decoded_hidden_payload}</div>
         </div>
       `;
     }
 
     if (analysis.sample_positions && analysis.sample_positions.length > 0) {
       html += `
-        <div style="margin-top: 12px;">
-          <h5 style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Detected Unicode Code Points:</h5>
-          <ul style="padding-left: 20px; font-size: 0.75rem; color: var(--accent-cyan);">
+        <div style="margin-top: 10px;">
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Detected Unicode Code Points:</div>
+          <ul style="padding-left: 18px; font-size: 11px; color: var(--accent-cyan);">
             ${analysis.sample_positions.map(p => `<li>${p.name} (${p.char}) at character index ${p.index}</li>`).join("")}
           </ul>
         </div>
@@ -430,48 +445,48 @@ function renderCategorySpecificAnalysis(category, analysis, correlation) {
 
   } else if (category === "pdf") {
     titleEl.innerText = "PDF Document Steganography Screening";
-    badgeEl.className = analysis.is_suspicious ? "badge-danger" : "badge-clean";
+    badgeEl.className = analysis.is_suspicious ? "status-pill-alert" : "status-pill-clean";
     badgeEl.innerText = analysis.is_suspicious ? "Marker / Overlay Found" : "Normal PDF";
 
     contentEl.innerHTML = `
-      <table class="kv-table">
+      <table class="forensic-table">
         <tr>
-          <td class="kv-key">Page Count</td>
-          <td class="kv-val">${analysis.num_pages}</td>
+          <td class="td-label">Page Count</td>
+          <td class="td-value">${analysis.num_pages}</td>
         </tr>
         <tr>
-          <td class="kv-key">/StegoData Marker</td>
-          <td class="kv-val" style="color: ${analysis.stegodata_marker_found ? '#ef4444' : '#10b981'}; font-weight: 700;">
+          <td class="td-label">/StegoData Marker</td>
+          <td class="td-value" style="color: ${analysis.stegodata_marker_found ? '#ef4444' : '#10b981'}; font-weight: 700;">
             ${analysis.stegodata_marker_found ? 'DETECTED in Object Stream' : 'None'}
           </td>
         </tr>
         <tr>
-          <td class="kv-key">Trailing Bytes Past %%EOF</td>
-          <td class="kv-val" style="color: ${analysis.trailing_data_after_eof ? '#ef4444' : '#10b981'};">
+          <td class="td-label">Trailing Data Past %%EOF</td>
+          <td class="td-value" style="color: ${analysis.trailing_data_after_eof ? '#ef4444' : '#10b981'};">
             ${analysis.trailing_data_after_eof ? `${analysis.trailing_bytes} bytes appended` : 'None'}
           </td>
         </tr>
       </table>
       ${analysis.trailing_preview ? `
-        <div class="payload-box">
-          <h4>Appended Overlay Content</h4>
-          <div class="payload-content">${analysis.trailing_preview}</div>
+        <div class="payload-terminal">
+          <div class="terminal-title">Appended Overlay Stream</div>
+          <div class="terminal-content">${analysis.trailing_preview}</div>
         </div>
       ` : ''}
     `;
 
   } else {
     // Binary or Audio or Generic
-    titleEl.innerText = `${triage.detected_format} Anomaly Screening`;
+    titleEl.innerText = `${triage.detected_format} Structural Screening`;
     contentEl.innerHTML = `
-      <table class="kv-table">
+      <table class="forensic-table">
         <tr>
-          <td class="kv-key">Format Category</td>
-          <td class="kv-val">${category.toUpperCase()}</td>
+          <td class="td-label">Format Classification</td>
+          <td class="td-value">${category.toUpperCase()}</td>
         </tr>
         <tr>
-          <td class="kv-key">Structural Status</td>
-          <td class="kv-val">${analysis.is_suspicious ? 'Suspicious anomaly identified' : 'Verified compliant'}</td>
+          <td class="td-label">Structural Validation</td>
+          <td class="td-value">${analysis.is_suspicious ? 'Structural anomaly flagged' : 'Compliant with specification'}</td>
         </tr>
       </table>
     `;
@@ -494,13 +509,35 @@ function switchVisualTab(mode) {
     btnEla.classList.add("active");
     btnLsb.classList.remove("active");
     imgEl.src = artifacts.ela_data_url;
-    captionEl.innerText = "Error Level Analysis (ELA): Amplifies compression rate discrepancies to highlight spliced, manipulated, or resaved image regions.";
+    captionEl.innerText = "Error Level Analysis (ELA): Amplifies compression discrepancies to highlight spliced, manipulated, or resaved pixel clusters.";
   } else {
     btnLsb.classList.add("active");
     btnEla.classList.remove("active");
     imgEl.src = artifacts.lsb_plane_data_url;
-    captionEl.innerText = "LSB Bit-Plane Visualizer (Bit 0): Unveils hidden noise patterns. Natural images have smooth bit planes, while stego embedding produces random static noise.";
+    captionEl.innerText = "LSB Bit-Plane Visualizer (Bit 0): Unveils hidden static noise. Natural images have smooth bit planes, while stego embedding produces random high-frequency static.";
   }
+}
+
+// Copy to Clipboard with Toast
+function copyText(elementId, label) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const text = el.innerText.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`Copied ${label} to clipboard!`);
+  }).catch(() => {
+    showToast(`Failed to copy`);
+  });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast-notice");
+  if (!toast) return;
+  toast.innerText = msg;
+  toast.style.display = "block";
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 2200);
 }
 
 // Modal Report Generation
@@ -510,52 +547,52 @@ function openReportModal() {
   const contentEl = document.getElementById("report-content");
 
   contentEl.innerHTML = `
-    <div style="border: 2px solid var(--accent-cyan); padding: 1.5rem; background: rgba(10, 14, 23, 0.9); border-radius: 8px;">
-      <div style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 15px;">
-        <h2 style="font-size: 1.2rem; color: #fff; letter-spacing: 1px;">${report.report_header.title}</h2>
-        <div style="color: var(--accent-cyan); font-size: 0.8rem; margin-top: 4px;">
+    <div style="border: 2px solid var(--border-medium); padding: 24px; background: rgba(10, 15, 26, 0.95); border-radius: 8px;">
+      <div style="text-align: center; border-bottom: 2px solid var(--border-subtle); padding-bottom: 14px; margin-bottom: 16px;">
+        <h2 style="font-size: 17px; color: #ffffff; letter-spacing: 0.5px;">${report.report_header.title}</h2>
+        <div style="color: var(--accent-copper); font-size: 11px; margin-top: 4px; font-weight: 600;">
           ${report.report_header.tool_name} — v${report.report_header.tool_version}
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; font-size: 0.8rem;">
-        <div><strong>Case ID:</strong> ${report.report_header.case_id}</div>
-        <div><strong>Evidence ID:</strong> ${report.report_header.evidence_id}</div>
-        <div><strong>Date / Time:</strong> ${report.report_header.generated_at}</div>
-        <div><strong>Risk Assessment:</strong> <span style="color: ${currentAnalysis.correlation.verdict_color}; font-weight: bold;">${report.verdict_summary.verdict_label} (${report.verdict_summary.risk_score}/100)</span></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; font-size: 12px;">
+        <div><strong>Case ID:</strong> <span style="font-family: var(--font-mono);">${report.report_header.case_id}</span></div>
+        <div><strong>Evidence ID:</strong> <span style="font-family: var(--font-mono);">${report.report_header.evidence_id}</span></div>
+        <div><strong>Timestamp:</strong> ${report.report_header.generated_at}</div>
+        <div><strong>Risk Verdict:</strong> <span style="color: ${currentAnalysis.correlation.verdict_color}; font-weight: bold;">${report.verdict_summary.verdict_label} (${report.verdict_summary.risk_score}/100)</span></div>
       </div>
 
-      <h4 style="color: var(--accent-cyan); font-size: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 8px;">
-        1. CHAIN OF CUSTODY & EVIDENCE INTEGRITY
-      </h4>
-      <table class="kv-table" style="font-size: 0.78rem; margin-bottom: 15px;">
-        <tr><td class="kv-key">Source Filename:</td><td class="kv-val">${report.evidence_integrity.filename}</td></tr>
-        <tr><td class="kv-key">File Size:</td><td class="kv-val">${report.evidence_integrity.filesize}</td></tr>
-        <tr><td class="kv-key">Magic Header:</td><td class="kv-val">${report.evidence_integrity.magic_signature}</td></tr>
-        <tr><td class="kv-key">SHA-256 Digest:</td><td class="kv-val"><span class="hash-val">${report.evidence_integrity.sha256}</span></td></tr>
-        <tr><td class="kv-key">MD5 Digest:</td><td class="kv-val"><span class="hash-val">${report.evidence_integrity.md5}</span></td></tr>
+      <div style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; margin-bottom: 8px;">
+        1. CHAIN OF CUSTODY &amp; EVIDENCE INTEGRITY
+      </div>
+      <table class="forensic-table" style="font-size: 11.5px; margin-bottom: 16px;">
+        <tr><td class="td-label">Source Filename:</td><td class="td-value">${report.evidence_integrity.filename}</td></tr>
+        <tr><td class="td-label">File Size:</td><td class="td-value">${report.evidence_integrity.filesize}</td></tr>
+        <tr><td class="td-label">Magic Header:</td><td class="td-value">${report.evidence_integrity.magic_signature}</td></tr>
+        <tr><td class="td-label">SHA-256 Digest:</td><td class="td-value"><span style="font-family: var(--font-mono); color: #38bdf8;">${report.evidence_integrity.sha256}</span></td></tr>
+        <tr><td class="td-label">MD5 Digest:</td><td class="td-value"><span style="font-family: var(--font-mono); color: #38bdf8;">${report.evidence_integrity.md5}</span></td></tr>
       </table>
 
-      <h4 style="color: var(--accent-cyan); font-size: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 8px;">
-        2. CORRELATED FINDINGS & TRIGGERED RULES
-      </h4>
-      <div style="margin-bottom: 15px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; margin-bottom: 8px;">
+        2. CORRELATED FINDINGS &amp; TRIGGERED RULES
+      </div>
+      <div style="margin-bottom: 16px;">
         ${report.triggered_rules.length > 0 ? report.triggered_rules.map(r => `
-          <div style="background: rgba(0,0,0,0.4); padding: 8px 12px; border-left: 3px solid #ef4444; margin-bottom: 6px; font-size: 0.78rem;">
+          <div style="background: rgba(0,0,0,0.4); padding: 8px 12px; border-left: 3px solid #ef4444; margin-bottom: 6px; font-size: 11.5px;">
             <strong>[${r.rule_id}] ${r.name} (${r.severity})</strong><br>
-            <span style="color: var(--text-muted);">${r.description}</span>
+            <span style="color: var(--text-secondary);">${r.description}</span>
           </div>
-        `).join("") : '<div style="color: #10b981; font-size: 0.8rem;">No anomalous rules triggered. Evidence conforms to expected format standards.</div>'}
+        `).join("") : '<div style="color: #10b981; font-size: 12px;">No anomalous rules triggered. Evidence conforms to expected format standards.</div>'}
       </div>
 
-      <h4 style="color: var(--accent-cyan); font-size: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; margin-bottom: 8px;">
+      <div style="font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; margin-bottom: 8px;">
         3. RECOMMENDED FORENSIC ACTIONS
-      </h4>
-      <ul style="padding-left: 20px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 15px;">
+      </div>
+      <ul style="padding-left: 18px; font-size: 11.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6;">
         ${report.recommendations.map(rc => `<li>${rc}</li>`).join("")}
       </ul>
 
-      <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; padding: 10px; font-size: 0.72rem; color: #fcd34d;">
+      <div style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 4px; padding: 12px; font-size: 11px; color: var(--accent-copper); line-height: 1.5;">
         ${report.forensic_disclaimer}
       </div>
     </div>
@@ -584,6 +621,7 @@ function downloadAuditJson() {
 function showLoading(msg) {
   document.getElementById("loading-status").innerText = msg;
   document.getElementById("loading-overlay").style.display = "block";
+  document.getElementById("results-viewport").style.display = "none";
 }
 
 function hideLoading() {

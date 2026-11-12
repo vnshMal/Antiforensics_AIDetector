@@ -23,3 +23,4 @@ SUPPORTED_DOC_EXTS = {".pdf", ".docx", ".xlsx", ".pptx"}
 SUPPORTED_TEXT_EXTS = {".txt", ".log", ".csv", ".json", ".md"}
 SUPPORTED_AUDIO_EXTS = {".wav", ".mp3"}
 SUPPORTED_BINARY_EXTS = {".exe", ".dll", ".elf", ".bin"}
+

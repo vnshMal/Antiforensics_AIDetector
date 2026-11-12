@@ -110,3 +110,4 @@ def analyze_text(filepath: Path) -> Dict[str, Any]:
         "has_decoded_payload": bool(decoded_payload),
         "visible_text_preview": visible_preview
     }
+

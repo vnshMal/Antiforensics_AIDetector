@@ -115,3 +115,4 @@ Here is the exact step-by-step walkthrough to present to your teacher:
 
 ## ⚖️ Responsible Use & Limitations
 This system is designed as an investigative screening aid to assist forensic examiners, students, and analysts in prioritizing files for deeper examination. Statistical flags indicate anomalies and potential concealment; final forensic determinations must be corroborated by validated forensic tools and qualified human review.
+

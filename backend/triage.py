@@ -129,3 +129,4 @@ def perform_triage(filepath: Path, original_filename: str) -> Dict[str, Any]:
         "created_time": time.ctime(stat_info.st_ctime),
         "modified_time": time.ctime(stat_info.st_mtime),
     }
+

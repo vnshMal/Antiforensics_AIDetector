@@ -125,3 +125,4 @@ def analyze_wav_audio(filepath: Path) -> Dict[str, Any]:
         "lsb_entropy": round(pcm_lsb_entropy, 4),
         "is_suspicious": is_suspicious
     }
+

@@ -3,342 +3,482 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anti-Forensics & Steganography AI Detection Suite</title>
+  <title>StegoForge — Forensics Workspace</title>
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
-  <header class="app-header">
-    <div class="brand">
-      <div class="brand-icon">🛡️</div>
-      <div class="brand-title">
-        <h1>ANTI-FORENSICS & STEGO SHIELD</h1>
-        <p>AI-Assisted Detection & Evidence Analysis</p>
+  <div class="app-wrapper">
+
+    <!-- ====================================================================
+         Left Sidebar
+         ==================================================================== -->
+    <aside class="app-sidebar">
+      <div>
+        <!-- Brand -->
+        <a href="#" class="sidebar-brand" onclick="switchTab('investigation'); return false;">
+          <div class="brand-monogram">
+            S<span>_</span>F
+          </div>
+          <div class="brand-text">
+            <h1>StegoForge</h1>
+            <p>FORENSICS WORKSPACE</p>
+          </div>
+        </a>
+
+        <!-- Navigation Section -->
+        <div class="sidebar-section-label">WORKSPACE</div>
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-tab="investigation">
+            <span class="nav-icon">🔍</span>
+            <span>Evidence analysis</span>
+          </button>
+          <button class="nav-item" data-tab="methodology">
+            <span class="nav-icon">❖</span>
+            <span>Methodology</span>
+          </button>
+          <button class="nav-item" data-tab="stego-studio">
+            <span class="nav-icon">🧪</span>
+            <span>Stego Studio</span>
+          </button>
+        </nav>
       </div>
-    </div>
 
-    <!-- Navigation Tabs -->
-    <nav class="nav-tabs">
-      <button class="nav-btn active" data-tab="investigation">
-        <span>🔍</span> Evidence Triage
-      </button>
-      <button class="nav-btn" data-tab="stego-lab">
-        <span>🧪</span> Stego Studio & Demo Lab
-      </button>
-      <button class="nav-btn" data-tab="framework">
-        <span>📖</span> Framework & Standards
-      </button>
-    </nav>
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer-card">
+        <div class="footer-card-header">
+          <span class="footer-card-icon">❖</span>
+          <span class="footer-card-title">Local-first analysis</span>
+        </div>
+        <p class="footer-card-desc">
+          Files are processed in your browser and are not uploaded to a public server.
+        </p>
+        <div class="footer-card-status">
+          <div class="status-dot-green"></div>
+          <span>Browser tools ready • API-assisted</span>
+        </div>
+      </div>
+    </aside>
 
-    <div class="header-status">
-      <div class="status-dot"></div>
-      <span>Engine Online • Ready</span>
-    </div>
-  </header>
+    <!-- ====================================================================
+         Main Viewport
+         ==================================================================== -->
+    <div class="app-main">
 
-  <!-- Main Container -->
-  <main class="app-container">
+      <!-- Top Navbar -->
+      <header class="top-navbar">
+        <div class="top-breadcrumb">
+          <span class="breadcrumb-tag">DIGITAL FORENSICS / TRIAGE</span>
+          <h2 class="breadcrumb-title" id="page-title">Evidence analysis</h2>
+        </div>
 
-    <!-- TAB 1: Evidence Investigation -->
-    <section id="tab-investigation" class="tab-pane active">
+        <div class="top-actions">
+          <div class="badge-hybrid">
+            <div class="status-dot-green"></div>
+            <span>Hybrid analysis</span>
+          </div>
+          <div class="user-avatar" title="Forensic Examiner">SF</div>
+        </div>
+      </header>
 
-      <!-- Upload and Quick Samples Grid -->
-      <div class="upload-grid">
-        
-        <!-- Dropzone Card -->
-        <div class="upload-card">
-          <div class="dropzone" id="dropzone">
-            <div class="dropzone-icon">📁</div>
-            <div class="dropzone-text">
-              <h3>Drop Evidence File for Forensic Screening</h3>
-              <p>Supports PNG, JPG, BMP, WebP, PDF, DOCX, TXT, WAV, PE Executables</p>
+      <!-- Main Scrollable Body -->
+      <main class="content-body">
+
+        <!-- ================================================================
+             TAB 1: Evidence Analysis
+             ================================================================ -->
+        <section id="tab-investigation" class="tab-pane active">
+
+          <!-- Hero Section -->
+          <div class="hero-section">
+            <div class="hero-content">
+              <span class="hero-tag">FILE INTAKE &amp; INITIAL EXAMINATION</span>
+              <h1 class="hero-title">
+                Inspect the evidence.
+                <span class="gradient-text">Preserve the facts.</span>
+              </h1>
+              <p class="hero-subtitle">
+                Generate a SHA-256 hash, inspect file signatures and available image metadata, and run a basic pixel-level screening — directly in your browser.
+              </p>
             </div>
+
+            <!-- Orbital Constellation Diagram -->
+            <div class="hero-orbital-wrapper">
+              <svg class="orbital-svg" viewBox="0 0 240 170">
+                <!-- Outer Elliptical Orbit 1 -->
+                <ellipse cx="120" cy="85" rx="100" ry="40" class="orbit-ring" transform="rotate(-15 120 85)" />
+                <!-- Outer Elliptical Orbit 2 -->
+                <ellipse cx="120" cy="85" rx="85" ry="50" class="orbit-ring" transform="rotate(25 120 85)" />
+
+                <!-- Center Node -->
+                <rect x="96" y="61" width="48" height="48" rx="12" class="orbit-center-node" />
+                <path d="M122 73 L114 86 L121 86 L118 97 L126 84 L119 84 Z" fill="var(--accent-amber)" />
+
+                <!-- Node: SHA-256 -->
+                <rect x="15" y="24" width="60" height="20" class="orbit-pill" />
+                <text x="45" y="38" text-anchor="middle" class="orbit-tag">SHA-256</text>
+
+                <!-- Node: METADATA -->
+                <rect x="165" y="50" width="64" height="20" class="orbit-pill" />
+                <text x="197" y="64" text-anchor="middle" class="orbit-tag">METADATA</text>
+
+                <!-- Node: IMAGE CHECK -->
+                <rect x="40" y="130" width="76" height="20" class="orbit-pill" />
+                <text x="78" y="144" text-anchor="middle" class="orbit-tag">IMAGE CHECK</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Notice Warning Card -->
+          <div class="notice-callout">
+            <div class="notice-icon-circle">❖</div>
+            <div class="notice-body">
+              <h4>Preliminary triage, not proof of concealment.</h4>
+              <p>
+                Statistical indicators can produce false positives and false negatives. Keep the original evidence and verify findings with validated forensic tools.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section Bar: Evidence Intake -->
+          <div class="section-header-bar">
+            <div>
+              <div class="section-label">01 / EVIDENCE INTAKE</div>
+              <h3 class="section-title">Select a file to examine</h3>
+            </div>
+            <span class="section-hint">Max recommended: 50 MB</span>
+          </div>
+
+          <!-- Intake Card / Dropzone -->
+          <div class="intake-card" id="dropzone">
             <input type="file" id="file-input" style="display: none;">
-            <button class="browse-btn" onclick="document.getElementById('file-input').click()">
-              Browse File from Computer
-            </button>
-          </div>
-        </div>
-
-        <!-- Quick Demo Samples Panel -->
-        <div class="samples-panel">
-          <div class="panel-header">
-            <h3><span>⚡</span> Demo Test Cases</h3>
-            <span class="sample-badge">Click to Run</span>
-          </div>
-          <div class="sample-list" id="samples-list">
-            <div style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 20px;">
-              Loading demo samples...
+            <div class="intake-icon-pill">↑</div>
+            <div class="intake-primary-text">
+              Drop evidence file here or <span class="intake-browse-link" onclick="document.getElementById('file-input').click()">browse your device</span>
+            </div>
+            <div class="intake-formats-row">
+              <span class="format-chip">PNG</span>
+              <span class="format-chip">JPEG</span>
+              <span class="format-chip">BMP</span>
+              <span class="format-chip">WEBP</span>
+              <span class="format-chip">PDF</span>
+              <span class="format-chip">DOCX</span>
+              <span class="format-chip">TXT</span>
+              <span class="format-chip">WAV</span>
+              <span class="format-chip">PE / EXE</span>
             </div>
           </div>
-        </div>
 
-      </div>
-
-      <!-- Loading State -->
-      <div class="loading-overlay" id="loading-overlay">
-        <div class="spinner"></div>
-        <h3 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 6px;">Performing Multi-Level Forensic Inspection...</h3>
-        <p id="loading-status" style="color: var(--text-muted); font-size: 0.85rem;">Calculating SHA-256 fingerprints, magic byte headers, and statistical distributions</p>
-      </div>
-
-      <!-- Results Container -->
-      <div class="results-container" id="results-container">
-
-        <!-- Verdict Banner -->
-        <div class="verdict-banner" id="verdict-banner">
-          <div class="verdict-left">
-            <div class="verdict-tag" id="verdict-badge">
-              <span>●</span> VERDICT PENDING
+          <!-- 1-Click Demo Test Cases Bar -->
+          <div class="demo-cases-wrapper">
+            <div class="demo-cases-header">
+              <span class="demo-cases-title">⚡ 1-Click Demo Test Evidence</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Instant Examiner Screening</span>
             </div>
-            <div class="verdict-title" id="verdict-title">Forensic Assessment Result</div>
-            <div class="verdict-summary" id="verdict-summary">Summary of automated screening checks.</div>
-          </div>
-          <div class="verdict-right">
-            <div class="score-meter">
-              <div class="score-circle" id="score-circle">--</div>
-              <div class="score-label">Risk Index / 100</div>
+            <div class="demo-pills-grid" id="demo-cases-grid">
+              <!-- Rendered dynamically -->
             </div>
           </div>
-        </div>
 
-        <!-- Details Grid -->
-        <div class="details-grid">
+          <!-- Loading State -->
+          <div class="loading-state" id="loading-overlay">
+            <div class="pulse-spinner"></div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Performing Multi-Level Forensic Inspection...</h4>
+            <p id="loading-status" style="font-size: 12px; color: var(--text-secondary);">Calculating SHA-256 digests, magic signatures, and LSB distributions</p>
+          </div>
 
-          <!-- Card 1: Level 1 File Triage & Integrity -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <span class="level-tag">LEVEL 1</span>
-                <span>Evidence Intake & Preservation</span>
+          <!-- Results Viewport -->
+          <div class="results-viewport" id="results-viewport">
+
+            <!-- Section Bar: Assessment Results -->
+            <div class="section-header-bar">
+              <div>
+                <div class="section-label">02 / FORENSIC ASSESSMENT</div>
+                <h3 class="section-title">Automated screening findings</h3>
               </div>
-              <span id="extension-match-badge" class="badge-clean">Verified</span>
+              <span class="section-hint" id="res-analysis-ref">REF: --</span>
             </div>
-            <table class="kv-table">
-              <tbody>
-                <tr>
-                  <td class="kv-key">File Name</td>
-                  <td class="kv-val" id="res-filename">--</td>
-                </tr>
-                <tr>
-                  <td class="kv-key">File Size</td>
-                  <td class="kv-val" id="res-filesize">--</td>
-                </tr>
-                <tr>
-                  <td class="kv-key">Magic Signature</td>
-                  <td class="kv-val" id="res-magic">--</td>
-                </tr>
-                <tr>
-                  <td class="kv-key">MIME Category</td>
-                  <td class="kv-val" id="res-mime">--</td>
-                </tr>
-                <tr>
-                  <td class="kv-key">Global Entropy</td>
-                  <td class="kv-val" id="res-entropy">-- bits/byte</td>
-                </tr>
-                <tr>
-                  <td class="kv-key">SHA-256 Fingerprint</td>
-                  <td class="kv-val"><span class="hash-val" id="res-sha256">--</span></td>
-                </tr>
-                <tr>
-                  <td class="kv-key">MD5 Digest</td>
-                  <td class="kv-val"><span class="hash-val" id="res-md5">--</span></td>
-                </tr>
-              </tbody>
-            </table>
+
+            <!-- Master Verdict Banner -->
+            <div class="verdict-master-card" id="verdict-card">
+              <div class="verdict-info-block">
+                <div class="verdict-pill-tag" id="verdict-tag">
+                  <span>●</span> VERDICT PENDING
+                </div>
+                <h2 class="verdict-display-title" id="verdict-title">Evidence Status Analysis</h2>
+                <p class="verdict-explanation" id="verdict-summary">Summary of automated screening checks.</p>
+              </div>
+
+              <div class="verdict-gauge-wrapper">
+                <div class="score-circular-badge" id="score-badge">--</div>
+                <div class="score-circular-label">Risk Index / 100</div>
+              </div>
+            </div>
+
+            <!-- Forensic Grid -->
+            <div class="forensic-grid">
+
+              <!-- Card 1: Level 1 File Triage & Integrity -->
+              <div class="forensic-card">
+                <div class="forensic-card-header">
+                  <div class="card-title-group">
+                    <span class="level-badge">LEVEL 1</span>
+                    <span class="card-title-text">Evidence Intake &amp; Integrity</span>
+                  </div>
+                  <span id="extension-badge" class="status-pill-clean">Signature Match</span>
+                </div>
+
+                <table class="forensic-table">
+                  <tr>
+                    <td class="td-label">Filename</td>
+                    <td class="td-value" id="res-filename">--</td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">File Size</td>
+                    <td class="td-value" id="res-filesize">--</td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">Magic Header</td>
+                    <td class="td-value" id="res-magic">--</td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">MIME Category</td>
+                    <td class="td-value" id="res-mime">--</td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">Global Entropy</td>
+                    <td class="td-value" id="res-entropy">-- bits/byte</td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">SHA-256</td>
+                    <td class="td-value">
+                      <div class="hash-pill">
+                        <span id="res-sha256">--</span>
+                        <button class="copy-hash-btn" onclick="copyText('res-sha256', 'SHA-256')" title="Copy SHA-256">📋</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="td-label">MD5 Digest</td>
+                    <td class="td-value">
+                      <div class="hash-pill">
+                        <span id="res-md5">--</span>
+                        <button class="copy-hash-btn" onclick="copyText('res-md5', 'MD5')" title="Copy MD5">📋</button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Card 2: Level 2 Format-Specific Steganography Screening -->
+              <div class="forensic-card">
+                <div class="forensic-card-header">
+                  <div class="card-title-group">
+                    <span class="level-badge">LEVEL 2</span>
+                    <span class="card-title-text" id="stego-card-title">Steganography Screening</span>
+                  </div>
+                  <span id="stego-status-badge" class="status-pill-clean">Normal</span>
+                </div>
+
+                <div id="stego-details-content">
+                  <!-- Dynamically populated based on file format -->
+                </div>
+              </div>
+
+              <!-- Card 3: Visual Artifact Forensics (For Images) -->
+              <div class="forensic-card" id="visual-card" style="display: none;">
+                <div class="forensic-card-header">
+                  <div class="card-title-group">
+                    <span class="level-badge">VISUAL FORENSICS</span>
+                    <span class="card-title-text">Pixel Artifacts &amp; Bit Planes</span>
+                  </div>
+                </div>
+
+                <div class="visual-toggle-bar">
+                  <button class="visual-toggle-btn active" id="btn-show-ela" onclick="switchVisualTab('ela')">
+                    Error Level Analysis (ELA)
+                  </button>
+                  <button class="visual-toggle-btn" id="btn-show-lsb" onclick="switchVisualTab('lsb')">
+                    LSB Plane Visualizer (Bit 0)
+                  </button>
+                </div>
+
+                <div class="visual-viewport">
+                  <img id="visual-img" src="" alt="Forensic Visualization">
+                  <div class="visual-legend" id="visual-caption">
+                    Error Level Analysis highlights compression discrepancies and resaved pixel clusters.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4: Level 3 Forensic Correlation & Rules -->
+              <div class="forensic-card" id="correlation-card">
+                <div class="forensic-card-header">
+                  <div class="card-title-group">
+                    <span class="level-badge">LEVEL 3</span>
+                    <span class="card-title-text">Correlation &amp; Rules Engine</span>
+                  </div>
+                  <span id="rules-count-badge" class="status-pill-clean">0 Rules Triggered</span>
+                </div>
+
+                <div id="rules-list">
+                  <!-- Rules list rendered dynamically -->
+                </div>
+
+                <div style="margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 12px;">
+                  <div style="font-size: 11px; font-weight: 700; color: var(--accent-copper); text-transform: uppercase; margin-bottom: 6px;">
+                    Recommended Examiner Actions:
+                  </div>
+                  <ul id="recommendations-list" style="padding-left: 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+                    <li>File passed baseline triage. Retain cryptographic hash in case archive.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Action Controls Card -->
+              <div class="action-controls-card span-two">
+                <div>
+                  <span style="font-size: 12px; color: var(--text-muted);">
+                    Evidence Status: <strong style="color: #ffffff;">Intake Recorded &amp; Hashed</strong>
+                  </span>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <button class="btn-primary-action" onclick="openReportModal()">
+                    <span>📄</span> Generate Formal Forensic Report
+                  </button>
+                  <button class="btn-secondary-action" onclick="downloadAuditJson()">
+                    <span>💾</span> Export Audit JSON
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
-          <!-- Card 2: Level 2 Format-Specific Steganography Screening -->
-          <div class="card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <span class="level-tag">LEVEL 2</span>
-                <span id="stego-card-title">Steganography & Anomaly Screening</span>
-              </div>
-              <span id="stego-status-badge" class="badge-clean">Normal</span>
-            </div>
+        </section>
+
+        <!-- ================================================================
+             TAB 2: Methodology & Standards
+             ================================================================ -->
+        <section id="tab-methodology" class="tab-pane">
+          <div class="methodology-container">
             
-            <div id="stego-details-content">
-              <!-- Dynamically populated based on file category (Image, Text, PDF, Audio, Binary) -->
-            </div>
-          </div>
-
-          <!-- Card 3: Visual Artifact Forensics (For Images) -->
-          <div class="card" id="visual-card" style="display: none;">
-            <div class="card-title">
-              <div class="card-title-left">
-                <span class="level-tag">VISUAL FORENSICS</span>
-                <span>Artifact & Bit-Plane Inspection</span>
-              </div>
+            <div class="methodology-card">
+              <h3 class="methodology-card-title">❖ 1. Level 1 — File Triage &amp; Fingerprinting</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">
+                Evidence intake begins with non-destructive preservation. Cryptographic digests (SHA-256, MD5, SHA-1) establish digital custody integrity. Magic header bytes (e.g. <code>\x89PNG\r\n\x1a\n</code>, <code>\xFF\xD8\xFF</code>, <code>%PDF-</code>, <code>PK\x03\x04</code>, <code>MZ</code>) are verified against claimed filename extensions to detect file disguise attacks. Global Shannon entropy is computed to identify compressed/encrypted payloads.
+              </p>
             </div>
 
-            <div class="visual-tabs">
-              <button class="visual-tab-btn active" id="btn-show-ela" onclick="switchVisualTab('ela')">
-                Error Level Analysis (ELA)
-              </button>
-              <button class="visual-tab-btn" id="btn-show-lsb" onclick="switchVisualTab('lsb')">
-                LSB Plane Visualizer (Bit 0)
-              </button>
-            </div>
-
-            <div class="visual-display">
-              <img id="visual-img" src="" alt="Forensic Visualization">
-              <div class="visual-caption" id="visual-caption">
-                Error Level Analysis highlights compression discrepancies and resaved pixel clusters.
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 4: Level 3 Forensic Correlation & Rules -->
-          <div class="card" id="correlation-card">
-            <div class="card-title">
-              <div class="card-title-left">
-                <span class="level-tag">LEVEL 3</span>
-                <span>Correlation & Anomaly Engine</span>
-              </div>
-              <span id="rules-count-badge" class="badge-clean">0 Rules Triggered</span>
-            </div>
-
-            <div id="rules-list">
-              <div style="color: var(--text-muted); font-size: 0.85rem; padding: 10px 0;">
-                No correlation anomalies detected.
-              </div>
-            </div>
-
-            <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-              <h4 style="font-size: 0.82rem; text-transform: uppercase; color: var(--accent-cyan); margin-bottom: 8px;">
-                Recommended Examiner Actions:
-              </h4>
-              <ul id="recommendations-list" style="padding-left: 20px; font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
-                <li>File passed preliminary triage. Retain hash in audit custody log.</li>
+            <div class="methodology-card">
+              <h3 class="methodology-card-title">❖ 2. Level 2 — Format-Specific Steganography Screening</h3>
+              <ul style="padding-left: 20px; color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                <li><strong>Chi-Square ($\chi^2$) PoV Analysis:</strong> Sequential LSB embedding equalizes adjacent pixel color values ($2k, 2k+1$). When observed frequencies become unnaturally identical, the p-value drops below $0.05$, signaling high probability of concealed data.</li>
+                <li><strong>RS Steganalysis (Fridrich et al.):</strong> Computes the count of Regular ($R$) and Singular ($S$) pixel blocks under dual flipping masks $M$ and $-M$. In clean images, $R_M \approx R_{-M}$ and $S_M \approx S_{-M}$ with $R_M > S_M$. Stego embedding closes this gap, allowing payload fraction estimation.</li>
+                <li><strong>Container Boundary Analysis:</strong> Scans for bytes appended past standard container markers (e.g., beyond JPEG End-of-Image <code>FF D9</code> or PNG <code>IEND</code>).</li>
+                <li><strong>Unicode Zero-Width Detector:</strong> Uncovers invisible covert channels embedded via zero-width spaces (<code>\u200B</code>, <code>\u200C</code>, <code>\u200D</code>, <code>\uFEFF</code>) and reconstructs the decoded ASCII payload.</li>
+                <li><strong>Document &amp; Executable Inspection:</strong> Detects project-specific <code>/StegoData</code> PDF dictionaries, <code>word/custom/stegodata.xml</code> parts, and PE section header overlay bytes.</li>
               </ul>
             </div>
-          </div>
 
-          <!-- Action Bar -->
-          <div class="card full-width" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <span style="font-size: 0.85rem; color: var(--text-muted);">
-                Analysis Reference ID: <strong id="res-analysis-id" style="color: #fff; font-family: var(--font-mono);">--</strong>
-              </span>
+            <div class="methodology-card">
+              <h3 class="methodology-card-title">❖ 3. Level 3 — Forensic Correlation Engine</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">
+                Correlates independent indicators into a consolidated Risk Index (0–100). Files are categorized as <strong>CLEAN</strong>, <strong>LOW RISK</strong>, <strong>SUSPICIOUS</strong>, or <strong>HIGH SUSPICION</strong>. False-positive safeguards prevent single minor anomalies from falsely branding evidence as tampered.
+              </p>
             </div>
-            <div style="display: flex; gap: 12px;">
-              <button class="btn-primary" onclick="openReportModal()">
-                <span>📄</span> Generate Formal Forensic Report
-              </button>
-              <button class="browse-btn" onclick="downloadAuditJson()">
-                <span>💾</span> Export Audit JSON
-              </button>
+
+            <div class="methodology-card" style="border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.03);">
+              <h3 class="methodology-card-title" style="color: var(--accent-copper);">⚠️ Evidentiary Limitations &amp; Responsible Use</h3>
+              <p style="color: var(--text-secondary); font-size: 12.5px; line-height: 1.6;">
+                This system is an automated triage aid designed to prioritize files for deeper review. The presence of an anomaly is not definitive proof of malicious activity, and a clean result does not guarantee absence of sophisticated concealment. Final forensic conclusions must be verified with validated forensic suites and qualified examiner review.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================================
+             TAB 3: Stego Studio & Demo Lab
+             ================================================================ -->
+        <section id="tab-stego-studio" class="tab-pane">
+          <div class="studio-container">
+            <div class="studio-card">
+              <div style="margin-bottom: 24px;">
+                <span class="hero-tag">ADVERSARIAL SIMULATION &amp; TEST FACTORY</span>
+                <h2 style="font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px;">
+                  Stego Studio
+                </h2>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                  Generate genuine steganographic artifacts on the fly to demonstrate detection live in front of your instructor or examiner.
+                </p>
+              </div>
+
+              <form id="studio-form" onsubmit="handleGenerateDemo(event)">
+                <div class="form-field-group">
+                  <label class="form-field-label">Concealment Vector</label>
+                  <select class="form-control-select" id="demo-type" onchange="handleDemoTypeChange()">
+                    <option value="lsb">1. Image LSB Spatial Steganography (Chi-Square &amp; RS Detectable)</option>
+                    <option value="zero_width">2. Text Steganography via Invisible Unicode Zero-Width Chars</option>
+                    <option value="overlay">3. Container Boundary Anomaly (Appended JPEG EOF Overlay)</option>
+                    <option value="pdf">4. PDF Document /StegoData Dictionary Marker</option>
+                    <option value="clean">5. Clean Baseline Natural Control (Verifies Zero False Positives)</option>
+                  </select>
+                </div>
+
+                <div class="form-field-group" id="group-cover-text" style="display: none;">
+                  <label class="form-field-label">Innocent Cover Text (Visible)</label>
+                  <textarea class="form-control-textarea" id="demo-cover-text" rows="2">Digital forensics is the process of uncovering and interpreting electronic data.</textarea>
+                </div>
+
+                <div class="form-field-group" id="group-secret-text">
+                  <label class="form-field-label">Secret Payload to Conceal</label>
+                  <input type="text" class="form-control-input" id="demo-secret-text" value="CONFIDENTIAL_EXFILTRATION_FLAG{DEMO_SUCCESS_2026}">
+                </div>
+
+                <button type="submit" class="btn-primary-action" id="btn-generate-demo">
+                  <span>⚡</span> Generate Stego File &amp; Analyze Instantly
+                </button>
+              </form>
             </div>
           </div>
+        </section>
 
-        </div>
+      </main>
 
-      </div>
+    </div>
 
-    </section>
+  </div>
 
-    <!-- TAB 2: Stego Studio & Demo Lab -->
-    <section id="tab-stego-lab" class="tab-pane">
-      <div class="lab-card">
-        <h2 class="lab-title">🧪 Live Stego Studio & Test Factory</h2>
-        <p class="lab-desc">
-          Generate real-world steganographic artifacts on the fly to demonstrate live detection to your instructor or examiner. The generated sample is immediately injected into the triage pipeline.
-        </p>
-
-        <form id="demo-generator-form" onsubmit="handleGenerateDemo(event)">
-          <div class="form-group">
-            <label class="form-label">Select Attack / Concealment Method</label>
-            <select class="form-select" id="demo-type" onchange="handleDemoTypeChange()">
-              <option value="lsb">1. Image LSB Spatial Steganography (Chi-Square & RS Detectable)</option>
-              <option value="zero_width">2. Text Steganography via Invisible Unicode Zero-Width Chars</option>
-              <option value="overlay">3. Container Boundary Anomaly (Appended JPEG EOF Overlay)</option>
-              <option value="pdf">4. PDF Document /StegoData Dictionary Marker</option>
-              <option value="clean">5. Clean Baseline Natural Control (Verifies Zero False Positives)</option>
-            </select>
-          </div>
-
-          <div class="form-group" id="group-cover-text" style="display: none;">
-            <label class="form-label">Innocent Cover Text (Visible)</label>
-            <textarea class="form-textarea" id="demo-cover-text" rows="2">Digital forensics is the process of uncovering and interpreting electronic data.</textarea>
-          </div>
-
-          <div class="form-group" id="group-secret-text">
-            <label class="form-label">Secret Payload to Conceal</label>
-            <input type="text" class="form-input" id="demo-secret-text" value="CONFIDENTIAL_EXFILTRATION_FLAG{DEMO_SUCCESS_2026}">
-          </div>
-
-          <button type="submit" class="btn-primary" id="btn-generate-demo">
-            <span>⚡</span> Generate Stego File & Analyze Instantly
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <!-- TAB 3: Framework & Standards -->
-    <section id="tab-framework" class="tab-pane">
-      <div class="lab-card" style="max-width: 950px;">
-        <h2 class="lab-title">📖 Forensic Architecture & Scientific Standards</h2>
-        <p class="lab-desc">
-          Implemented based on published digital forensics triage principles and the StegoForge detection specification.
-        </p>
-
-        <div style="display: flex; flex-direction: column; gap: 1.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.7;">
-          <div style="background: rgba(10, 14, 23, 0.6); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 8px;">1. Level 1 — File Triage & Cryptographic Preservation</h3>
-            <p>Every submitted file is hashed with SHA-256, MD5, and SHA-1 for chain of custody. The system inspects file magic headers (e.g., <code>\x89PNG</code>, <code>\xFF\xD8\xFF</code>, <code>%PDF</code>, <code>PK\x03\x04</code>) and flags extension disguise attempts (e.g., an executable renamed to <code>.jpg</code>).</p>
-          </div>
-
-          <div style="background: rgba(10, 14, 23, 0.6); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 8px;">2. Level 2 — Format-Specific Steganography Screening</h3>
-            <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
-              <li><strong>Chi-Square ($\chi^2$) Analysis:</strong> Evaluates Pairs of Values (PoVs $2k, 2k+1$) across pixel luminance distributions. LSB substitution equalizes natural frequencies; p-value drops below $0.05$.</li>
-              <li><strong>RS Steganalysis (Fridrich et al.):</strong> Samples pixel vectors under dual flipping masks $M$ and $-M$. Measures Regular ($R$) and Singular ($S$) group behavior to estimate payload percentage.</li>
-              <li><strong>Container Overlay Verification:</strong> Scans for bytes appended past standard markers (JPEG <code>FF D9</code>, PNG <code>IEND</code>, PE Section Header table).</li>
-              <li><strong>Unicode Zero-Width Detector:</strong> Detects and reconstructs covert binary payloads hidden using <code>\u200B</code> and <code>\u200C</code> invisible code points.</li>
-              <li><strong>Error Level Analysis (ELA):</strong> Generates amplified compression discrepancy maps to visually reveal manipulation.</li>
-            </ul>
-          </div>
-
-          <div style="background: rgba(10, 14, 23, 0.6); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <h3 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 8px;">3. Level 3 — Forensic Correlation & Scoring</h3>
-            <p>Consolidates independent evidence sources. A score between 0 and 100 categorizes evidence into Clean, Low Risk, Suspicious, or High Suspicion, ensuring false-positive safeguards.</p>
-          </div>
-
-          <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.2rem; border-radius: var(--radius-md);">
-            <h3 style="color: var(--accent-red); font-size: 1rem; margin-bottom: 8px;">⚠️ Responsible Use & Evidentiary Boundaries</h3>
-            <p style="color: #fca5a5;">This tool serves as an investigative screening aid to prioritize files for deeper review. The presence of an anomaly is not definitive proof of malicious tampering, and the absence of flags does not guarantee absolute authenticity. Final conclusions require qualified examiner verification.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Formal Forensic Report Modal -->
-  <div class="modal-overlay" id="report-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 style="font-size: 1.15rem; color: #fff; display: flex; align-items: center; gap: 8px;">
-          <span>📋</span> Digital Forensic Examination Report
-        </h2>
-        <div style="display: flex; gap: 10px;">
-          <button class="btn-primary" style="padding: 6px 14px; font-size: 0.8rem;" onclick="window.print()">
+  <!-- ====================================================================
+       Formal Forensic Report Modal
+       ==================================================================== -->
+  <div class="modal-backdrop" id="report-modal">
+    <div class="modal-sheet">
+      <div class="modal-sheet-header">
+        <h3 style="font-size: 15px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+          <span>📋</span> Forensic Examination Certificate &amp; Triage Report
+        </h3>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-primary-action" style="padding: 6px 14px; font-size: 11.5px;" onclick="window.print()">
             🖨️ Print / Save as PDF
           </button>
-          <button class="close-btn" onclick="closeReportModal()">&times;</button>
+          <button class="modal-close-btn" onclick="closeReportModal()">&times;</button>
         </div>
       </div>
 
-      <div id="report-content" style="font-size: 0.85rem; line-height: 1.6;">
-        <!-- Filled dynamically -->
+      <div id="report-content">
+        <!-- Rendered dynamically -->
       </div>
     </div>
   </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toast-notice">Copied to clipboard</div>
 
   <script src="/static/js/app.js"></script>
 </body>

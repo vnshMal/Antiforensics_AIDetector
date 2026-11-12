@@ -119,3 +119,4 @@ def analyze_office(filepath: Path) -> Dict[str, Any]:
         "sample_parts": part_names[:15],
         "is_suspicious": is_suspicious
     }
+
