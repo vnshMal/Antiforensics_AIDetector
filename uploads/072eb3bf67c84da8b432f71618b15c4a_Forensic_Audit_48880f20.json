@@ -1,0 +1,125 @@
+{
+  "analysis_id": "48880f20-46ce-4615-82d4-e8f8dabaca62",
+  "file_category": "pdf",
+  "triage": {
+    "filename": "custom_pdf_669753.pdf",
+    "filesize": 536,
+    "filesize_formatted": "0.52 KB",
+    "hashes": {
+      "sha256": "f6c56caa410976e06ca3a20844b07355e191ac9a7417cd4d8c4458b552889552",
+      "md5": "045e6294aec0c23b1146bf2bd33f4863",
+      "sha1": "edf1d872e4cd308e1aaca565137e829abdfa2d21"
+    },
+    "claimed_extension": ".pdf",
+    "detected_mime": "application/pdf",
+    "detected_format": "PDF Document",
+    "expected_extension": ".pdf",
+    "extension_mismatch": false,
+    "mismatch_details": "",
+    "global_entropy": 5.0254,
+    "created_time": "Thu Nov 12 20:59:25 2026",
+    "modified_time": "Thu Nov 12 20:59:25 2026"
+  },
+  "analysis": {
+    "format": "PDF Document",
+    "num_pages": 1,
+    "is_encrypted": false,
+    "stegodata_marker_found": true,
+    "stegodata_offset": 48,
+    "trailing_data_after_eof": false,
+    "trailing_bytes": 0,
+    "trailing_preview": "",
+    "metadata": {},
+    "is_suspicious": true
+  },
+  "correlation": {
+    "risk_score": 45,
+    "verdict": "SUSPICIOUS",
+    "verdict_label": "Suspicious Evidence",
+    "verdict_color": "#f59e0b",
+    "triggered_rules_count": 1,
+    "triggered_rules": [
+      {
+        "rule_id": "STEG_DOC_01_PDF_STEGODATA",
+        "name": "Known /StegoData Marker in PDF Dictionary",
+        "severity": "CRITICAL",
+        "description": "Found project-specific /StegoData dictionary key in PDF stream."
+      }
+    ],
+    "summary": "Moderate steganographic or anti-forensic anomalies identified. Statistical tests or metadata indicate possible data concealment. Manual examiner inspection recommended.",
+    "forensic_recommendations": [
+      "Isolate evidence file and preserve cryptographic SHA-256 fingerprint in custody log."
+    ]
+  },
+  "report": {
+    "report_header": {
+      "title": "DIGITAL FORENSIC TRIAGE & STEGANOGRAPHY SCREENING REPORT",
+      "case_id": "CASE-48880F20",
+      "evidence_id": "EVID-BACA62",
+      "generated_at": "2026-11-12 15:29:25 UTC",
+      "tool_name": "Anti-Forensics & Steganography AI Detection Suite",
+      "tool_version": "2.0-Production"
+    },
+    "evidence_integrity": {
+      "filename": "custom_pdf_669753.pdf",
+      "filesize": "0.52 KB",
+      "sha256": "f6c56caa410976e06ca3a20844b07355e191ac9a7417cd4d8c4458b552889552",
+      "md5": "045e6294aec0c23b1146bf2bd33f4863",
+      "sha1": "edf1d872e4cd308e1aaca565137e829abdfa2d21",
+      "magic_signature": "PDF Document",
+      "mime_type": "application/pdf",
+      "extension_status": "VALID"
+    },
+    "verdict_summary": {
+      "risk_score": 45,
+      "verdict": "SUSPICIOUS",
+      "verdict_label": "Suspicious Evidence",
+      "summary": "Moderate steganographic or anti-forensic anomalies identified. Statistical tests or metadata indicate possible data concealment. Manual examiner inspection recommended."
+    },
+    "triggered_rules": [
+      {
+        "rule_id": "STEG_DOC_01_PDF_STEGODATA",
+        "name": "Known /StegoData Marker in PDF Dictionary",
+        "severity": "CRITICAL",
+        "description": "Found project-specific /StegoData dictionary key in PDF stream."
+      }
+    ],
+    "recommendations": [
+      "Isolate evidence file and preserve cryptographic SHA-256 fingerprint in custody log."
+    ],
+    "technical_details": {
+      "triage": {
+        "filename": "custom_pdf_669753.pdf",
+        "filesize": 536,
+        "filesize_formatted": "0.52 KB",
+        "hashes": {
+          "sha256": "f6c56caa410976e06ca3a20844b07355e191ac9a7417cd4d8c4458b552889552",
+          "md5": "045e6294aec0c23b1146bf2bd33f4863",
+          "sha1": "edf1d872e4cd308e1aaca565137e829abdfa2d21"
+        },
+        "claimed_extension": ".pdf",
+        "detected_mime": "application/pdf",
+        "detected_format": "PDF Document",
+        "expected_extension": ".pdf",
+        "extension_mismatch": false,
+        "mismatch_details": "",
+        "global_entropy": 5.0254,
+        "created_time": "Thu Nov 12 20:59:25 2026",
+        "modified_time": "Thu Nov 12 20:59:25 2026"
+      },
+      "analysis": {
+        "format": "PDF Document",
+        "num_pages": 1,
+        "is_encrypted": false,
+        "stegodata_marker_found": true,
+        "stegodata_offset": 48,
+        "trailing_data_after_eof": false,
+        "trailing_bytes": 0,
+        "trailing_preview": "",
+        "metadata": {},
+        "is_suspicious": true
+      }
+    },
+    "forensic_disclaimer": "IMPORTANT NOTICE: This screening report is an automated preliminary investigative aid. Statistical deviations and heuristics highlight items requiring further manual review. An anomaly is not proof of malicious intent, and a clean result does not guarantee absence of sophisticated concealment. Final forensic conclusions must be verified by a qualified examiner."
+  }
+}
